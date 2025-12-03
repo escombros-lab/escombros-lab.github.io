@@ -1,94 +1,88 @@
-## ⚙️ @ESCOMBROS.LOG — Laboratório Independente de Investigação Sociotécnica
+## ESCOMBROS.LOG
 
-> "Algoritmos são opiniões embutidas em código."
-> — Cathy O'Neil, *Weapons of Math Destruction* (2016)
+> Repositório *front-end* oficial do [Escombros Lab](https://github.com/escombros-lab).
+> Atua como o agregador estático e ponto de acesso público para as investigações sociotécnicas do laboratório.
 
----
+## :: ARQUITETURA DO SISTEMA
 
-O **@ESCOMBROS.LOG** é um laboratório independente dedicado a investigar a partir de suas estruturas técnicas, fluxos de dados e efeitos sociais, combinando métodos da **Engenharia de Software** com perspectivas das **Ciências Sociais**.
+O portal foi construído sob uma filosofia de **minimalismo digital e independência**. Não utilizamos frameworks pesados (React, Vue, Bootstrap) para garantir performance, longevidade do código e facilidade de auditoria.
 
-O laboratório produz microinvestigações, auditorias, estudos exploratórios e pequenos mapeamentos de infraestrutura. O foco é tornar visíveis decisões técnicas, opacidades e assimetrias presentes no cotidiano das plataformas, priorizando análises acessíveis e empiricamente fundamentadas.
-
-### 🎯 Foco e Intenção
-
-O laboratório desenvolve investigações sobre:
-
-1.  **Opacidade e Automação:** Como sistemas filtram, priorizam ou tomam decisões, e o que permanece oculto para usuários e trabalhadores.
-2.  **Infraestruturas Digitais:** Como plataformas estruturam regras, fluxos e limites técnicos que moldam interação, dados e formas de trabalho.
-3.  **Governança Tecnológica:** Como soluções digitais distribuem capacidades, acessos e restrições no dia a dia, frequentemente sem escrutínio público.
-
-Essas análises são construídas de forma incremental, combinando experimentação técnica, leitura de documentação, coleta orientada a dados, automações, scripts exploratórios e reflexão sociotécnica.
+### Tech Stack
+*   **Core:** HTML5 Semântico.
+*   **Styling:** CSS3 nativo (CSS Variables, Flexbox/Grid). Design system proprietário focado em estética "Terminal/Forensics".
+*   **Logic:** Vanilla JavaScript (ES6+).
+*   **Data Source:** JSON (`fetch` API).
 
 ---
 
-### 📂 Estrutura do Acervo
+## :: ESTRUTURA DE DADOS
 
-| Diretório | Seção do Site | Conteúdo |
-| :--- | :--- | :--- |
-| `00_MANIFESTO.md` | Manifesto | Visão geral, fundamentos e abordagem investigativa. |
-| `01_AUDITS/` | Auditorias | Microinvestigações e estudos exploratórios sobre sistemas e plataformas. **(Atualmente em: Aguardando a primeira investigação inédita)** |
-| `02_EVIDENCE_LOCKER/` | Evidências | Logs, scripts, dados brutos e materiais técnicos para verificação independente. |
-| `03_MEDIA_INTERVENTIONS/` | Divulgação | Artefatos visuais e materiais sintéticos para comunicação pública. |
+O site opera como uma *Single Page Application* (SPA) simplificada. O conteúdo das seções de auditoria não é *hardcoded* no HTML, mas renderizado dinamicamente.
 
----
+### `data/projects.json`
+Este arquivo atua como o "banco de dados" do site. Ele controla o que é exibido nas seções:
 
-### 🔬 Áreas Temáticas de Foco
+1.  **01_AUDITS/**: Lista de investigações ativas/arquivadas.
+2.  **02_EVIDENCE_LOCKER/**: Arquivos e logs exibidos no terminal simulado.
 
-O Lab está atualmente direcionando esforços de desenvolvimento e aquisição de dados em sistemas que mediam a relação entre **trabalho**, **tecnologia** e **infraestruturas digitais**, com ênfase em:
-
-*   **Trabalho e Governança Algorítmica:** Análise exploratória de práticas problemáticas, vieses técnicos e automação da exclusão em plataformas de Recrutamento e Seleção (R&S) e gestão de trabalho (Gig Economy).
-*   **Infraestrutura e Opacidade:** Experimentação com logs, APIs e arquiteturas de serviços digitais para mapear as decisões técnicas inscritas no código e seus efeitos sociotécnicos.
-
-Essas áreas serão formalizadas em projetos no diretório `01_AUDITS/` assim que a primeira investigação inédita estiver pronta para publicação.
-
----
-
-### 💻 Execução Local / Deploy
-
-O projeto é uma aplicação estática, construída em HTML, CSS, JavaScript e arquivos JSON.
-
-#### 1. Clonar o Repositório
-```bash
-git clone https://github.com/vasconcel/escombros-log.git
-cd escombros-log
+**Exemplo de estrutura:**
+```json
+{
+  "investigations": [
+    {
+      "id": "CASE_001",
+      "title": "TITLE_HERE",
+      "status": { "text": "PUBLISHED", "class": "status-finished" },
+      "links": [{ "text": "READ_REPORT", "url": "..." }]
+    }
+  ]
+}
 ```
 
-#### 2. Execução Local
-Para carregar `data/projects.json` sem erros de CORS, rode um servidor local:
+---
 
-```bash
-# Python 3
-python -m http.server
-```
-Acesse: `http://localhost:8000`
+## :: PROTOCOLOS DE DESENVOLVIMENTO (Local Dev)
 
-*Alternativa: Use o VS Code com a extensão **Live Server**.*
+Como o sistema utiliza requisições assíncronas (`fetch`) para ler o arquivo JSON, **o site não funcionará corretamente se aberto diretamente pelo sistema de arquivos** (`file://index.html`) devido a políticas de segurança de navegadores (CORS).
 
-#### 3. Deploy (GitHub Pages)
-1.  Use a branch `main`.
-2.  Vá em **Settings** → **Pages**.
-3.  Selecione `/ (root)` como diretório.
+Para rodar localmente:
+
+1.  **Clone o repositório:**
+    ```bash
+    git clone https://github.com/escombros-lab/escombros-lab.github.io.git
+    cd escombros-lab.github.io
+    ```
+
+2.  **Inicie um servidor local:**
+    *   Com Python 3 (Recomendado):
+        ```bash
+        python3 -m http.server 8000
+        ```
+    *   Com Node.js:
+        ```bash
+        npx serve
+        ```
+
+3.  **Acesse:** `http://localhost:8000`
 
 ---
 
-### 🤝 Colaboração
+## :: DEPLOY & HOSPEDAGEM
 
-O laboratório é um projeto de conhecimento aberto e em evolução contínua. Sugestões, *issues*, estudos de caso e interlocuções são bem-vindas.
+*   **Infraestrutura:** GitHub Pages.
+*   **Branch:** `main` (Raiz).
+*   **DNS:** https://escombros-lab.github.io
 
-*   **Researcher:** Gabriel V. Silva
-*   **Email:** `gabriel.vasconcel@outlook.com`
-*   **GitHub:** [@vasconcel](https://github.com/vasconcel)
+Qualquer *push* na branch `main` dispara automaticamente a build do GitHub Pages. O cache pode levar até 60 segundos para atualizar.
 
 ---
 
-### 📄 Licença
+## :: LICENÇA
 
-*   Os **códigos** serão distribuídos sob **MIT License**.
-*   **Conteúdos textuais** seguem a filosofia:
+Este repositório segue a política de duplo licenciamento do Escombros Lab:
 
-**// OPEN KNOWLEDGE — NO_RIGHTS_RESERVED**
-Podem ser reutilizados livremente, preservando a integridade autoral.
+*   **CÓDIGO (HTML/CSS/JS):** [MIT License](LICENSE).
+*   **CONTEÚDO/TEXTOS:** [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
 
-<p align="center">
-    <code>// OPEN KNOWLEDGE — MIT LICENSE — NO_RIGHTS_RESERVED</code>
-</p>
+---
+*2025 © Escombros Lab. Independent Research Unit.*
